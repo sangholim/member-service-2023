@@ -1,3 +1,8 @@
 spring:
   r2dbc:
     url: r2dbc:postgresql://root:password@localhost:5432/member_service
+  flyway:
+    user: root
+    password: password
+    url: jdbc:postgresql://localhost:5432/member_service
+    baseline-on-migrate: true
