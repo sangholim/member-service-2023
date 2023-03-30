@@ -17,6 +17,8 @@ repositories {
 }
 
 dependencies {
+	implementation(platform("io.kotest:kotest-bom:5.5.5"))
+
 	implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:2.2.1.RELEASE")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -40,6 +42,13 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("io.kotest:kotest-runner-junit5")
+	testImplementation("io.kotest:kotest-assertions-core")
+	testImplementation("io.kotest:kotest-property")
+	testImplementation("org.testcontainers:postgresql:1.17.6")
+	testImplementation("org.testcontainers:testcontainers:1.17.6")
+	testImplementation("io.kotest.extensions:kotest-extensions-testcontainers:1.3.4")
+	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
 }
 
 tasks.withType<KotlinCompile> {
