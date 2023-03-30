@@ -1,2 +1,2 @@
-# talk-resource-server-2023
-talk 데이터 처리 서버
+# member-service-2023
+- 서비스 이용 회원의 프로필, 친구, 채팅을 제공합니다
