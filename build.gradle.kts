@@ -25,6 +25,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
+	implementation("org.flywaydb:flyway-core")
+
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
@@ -32,7 +34,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
-	implementation("org.postgresql:r2dbc-postgresql:1.0.1.RELEASE")
+	runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("org.postgresql:r2dbc-postgresql")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
