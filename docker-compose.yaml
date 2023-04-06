@@ -15,7 +15,37 @@ services:
       # PostgreSQL 계정 및 패스워드 설정 옵션
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: member_service
     # 볼륨 설정
     volumes:
       - ./data/postgres/:/var/lib/postgresql/data
+      - ./docker-compose/postgresql/:/docker-entrypoint-initdb.d
+  # 서비스 명
+  authrization:
+    # 사용할 이미지
+    image: hybriddevslim/authorization-server-2023:latest
+    # 컨테이너 실행 시 재시작
+    restart: always
+    # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
+    ports:
+      - "9090:9090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/authorization
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_PASSWORD: redis
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KAKAO_REDIRECTURI: http://auth-server:9090/login/oauth2/code/kakao
+      AUTHORIZATION.ISSUER: http://auth-server:9090
+    # 볼륨 설정
+    volumes:
+      - ./data/authorization/:/data
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis/:/data
+      - ./conf/redis.conf:/usr/local/conf/redis.conf
+    command: redis-server /usr/local/conf/redis.conf
