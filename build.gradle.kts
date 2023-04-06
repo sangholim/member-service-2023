@@ -25,7 +25,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-
 	implementation("org.flywaydb:flyway-core")
 
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -35,6 +34,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
+	runtimeOnly("com.nimbusds:oauth2-oidc-sdk:10.7")
 	runtimeOnly("org.postgresql:postgresql")
 	runtimeOnly("org.postgresql:r2dbc-postgresql")
 
