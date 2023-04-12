@@ -18,6 +18,7 @@ class SecurityConfig(
     @Bean
     fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain =
             http {
+                csrf { disable() }
                 authorizeExchange {
                     authorize(anyExchange, hasRole("USER"))
                 }
