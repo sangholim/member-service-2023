@@ -13,13 +13,18 @@ class ProfileRepositoryTests(
 
     Given("프로필 생성 하기") {
         When("프로필 생성 성공한 경우") {
+            beforeEach {
+                repository.deleteAll()
+            }
             val profile = profile {
+                this.userId = "a"
                 this.email = "test@test"
                 this.name = "a"
             }
             Then("id, createdAt, updatedAt 이 존재한다") {
                 repository.save(profile).should {
                     it.id shouldNotBe null
+                    it.userId shouldNotBe null
                     it.createdAt shouldNotBe null
                     it.updatedAt shouldNotBe null
                 }
