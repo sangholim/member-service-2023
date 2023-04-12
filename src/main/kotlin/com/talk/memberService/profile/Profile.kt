@@ -12,6 +12,7 @@ import java.time.Instant
 class Profile(
         @Id
         var id: String? = null,
+        var userId: String,
         var email: String,
         var name: String? = null,
         @CreatedDate
@@ -25,7 +26,7 @@ class Profile(
 ) {
 
     private constructor(builder: Builder) :
-            this(builder.id, builder.email, builder.name, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
+            this(builder.id, builder.userId!!, builder.email, builder.name, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
 
     companion object {
         inline fun profile(block: Builder.() -> Unit) = Builder().apply(block).build()
@@ -43,6 +44,7 @@ class Profile(
 
     class Builder {
         var id: String? = null
+        var userId: String? = null
         var email: String = ""
         var name: String? = ""
         var createdAt: Instant? = null
