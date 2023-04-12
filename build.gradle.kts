@@ -3,9 +3,10 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
 	id("org.springframework.boot") version "3.0.5"
+	id("org.springdoc.openapi-gradle-plugin") version "1.6.0"
 	id("io.spring.dependency-management") version "1.1.0"
-	kotlin("jvm") version "1.7.22"
-	kotlin("plugin.spring") version "1.7.22"
+	kotlin("jvm") version "1.8.20"
+	kotlin("plugin.spring") version "1.8.20"
 }
 
 group = "com.talk"
@@ -17,6 +18,7 @@ repositories {
 }
 
 dependencies {
+	annotationProcessor("com.github.therapi:therapi-runtime-javadoc-scribe:0.15.0")
 	implementation(platform("io.kotest:kotest-bom:5.5.5"))
 
 	implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:2.2.1.RELEASE")
@@ -26,6 +28,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.flywaydb:flyway-core")
+	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0")
+	implementation("org.springdoc:springdoc-openapi-javadoc:1.6.0")
+	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.0")
+	implementation("com.github.therapi:therapi-runtime-javadoc:0.15.0")
 
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
@@ -71,5 +77,11 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 			username.set(dockerUsername)
 			password.set(System.getenv("DOCKER_PASSWORD"))
 		}
+	}
+}
+
+openApi {
+	customBootRun {
+		args.add("--spring.profiles.active=oas")
 	}
 }
