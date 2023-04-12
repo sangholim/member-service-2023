@@ -1,0 +1,6 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.ReactiveSecurityAutoConfiguration
+  r2dbc:
+    url: r2dbc:postgresql://root:password@localhost:5432/member_service
