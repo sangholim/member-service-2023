@@ -31,6 +31,21 @@ class ProfileViewApiTests(
             .get().uri("/member-service/profiles")
 
     Given("프로필 조회") {
+        When("프로필이 없는 경우") {
+            val email = "test@test"
+            val name = "a"
+            beforeEach {
+                profileRepository.deleteAll()
+                profile{
+                    this.userId = "test"
+                    this.email = email
+                    this.name = name
+                }.run { profileRepository.save(this) }
+            }
+            Then("status 404") {
+                request().exchange().expectStatus().isNotFound
+            }
+        }
         When("성공한 경우") {
             val email = "test@test"
             val name = "a"
