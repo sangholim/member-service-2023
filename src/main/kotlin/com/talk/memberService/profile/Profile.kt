@@ -14,7 +14,7 @@ class Profile(
         var id: String? = null,
         var userId: String,
         var email: String,
-        var name: String? = null,
+        var name: String,
         @CreatedDate
         var createdAt: Instant? = null,
         @CreatedBy
@@ -26,7 +26,7 @@ class Profile(
 ) {
 
     private constructor(builder: Builder) :
-            this(builder.id, builder.userId!!, builder.email, builder.name, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
+            this(builder.id, builder.userId!!, builder.email, builder.name!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
 
     companion object {
         inline fun profile(block: Builder.() -> Unit) = Builder().apply(block).build()
