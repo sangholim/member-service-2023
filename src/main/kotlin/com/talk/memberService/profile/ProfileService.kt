@@ -21,4 +21,12 @@ class ProfileService(
             this.name = payload.name
         }.run { repository.save(this) }
     }
+
+    /**
+     * 회원 ID 기준 프로필 조회
+     */
+    suspend fun getByUserId(userId: String?): Profile {
+        if (userId == null) throw Exception("회원 번호가 존재하지 않습니다")
+        return repository.findByUserId(userId) ?: throw Exception("프로필이 존재하지 않습니다")
+    }
 }

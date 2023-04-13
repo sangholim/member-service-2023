@@ -1,5 +1,7 @@
-package com.talk.memberService.profile
+package com.talk.memberService.profile.api
 
+import com.talk.memberService.profile.ProfileCreationPayload
+import com.talk.memberService.profile.ProfileRepository
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import oauth2.Oauth2Constants
@@ -11,7 +13,7 @@ import org.springframework.test.web.reactive.server.WebTestClient
 
 @SpringBootTest
 @AutoConfigureWebTestClient
-class ProfileControllerTests(
+class ProfileCreationApiTests(
         private val webClient: WebTestClient,
         private val profileRepository: ProfileRepository
 ) : BehaviorSpec({
