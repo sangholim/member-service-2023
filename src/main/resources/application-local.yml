@@ -14,6 +14,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/member_service
     baseline-on-migrate: true
 
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
 
 
 logging:
