@@ -3,7 +3,9 @@ package com.talk.memberService.profile.api
 import com.talk.memberService.profile.ProfileCreationPayload
 import com.talk.memberService.profile.ProfileRepository
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.matchers.shouldBe
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldNotBe
 import oauth2.Oauth2Constants
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
@@ -40,8 +42,16 @@ class ProfileCreationApiTests(
             }
             Then("프로필 데이터가 존재한다") {
                 request(payload).exchange()
-                profileRepository.countByEmail(payload.email) shouldBe 1
-                profileRepository.count() shouldBe 1
+                profileRepository.findByUserId(Oauth2Constants.SUBJECT).shouldNotBeNull().should {
+                    it.id shouldNotBe null
+                    it.userId shouldNotBe null
+                    it.email shouldNotBe null
+                    it.name shouldNotBe null
+                    it.createdAt shouldNotBe null
+                    it.createdBy shouldNotBe null
+                    it.updatedAt shouldNotBe null
+                    it.updatedBy shouldNotBe null
+                }
             }
         }
     }
