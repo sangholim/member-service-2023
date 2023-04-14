@@ -4,9 +4,9 @@ CREATE TABLE friend (
     profile_id varchar(100) NOT NULL,
     name varchar(100) NOT NULL,
     created_at timestamp with time zone DEFAULT NULL,
-    created_by timestamp with time zone DEFAULT NULL,
+    created_by varchar(100) DEFAULT NULL,
     updated_at timestamp with time zone DEFAULT NULL,
-    updated_by timestamp with time zone DEFAULT NULL,
+    updated_by varchar(100) DEFAULT NULL,
     PRIMARY KEY (id)
 );
 
