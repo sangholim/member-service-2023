@@ -36,7 +36,7 @@ data class ProfileView(
         var id: String = ""
         var email: String = ""
         var name: String = ""
-        var friends: List<FriendView>? = null
+        var friends: List<FriendView>? = emptyList()
         fun build(): ProfileView {
             return ProfileView(this)
         }
