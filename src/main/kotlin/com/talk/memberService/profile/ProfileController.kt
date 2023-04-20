@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(value = ["/member-service"], produces = [MediaType.APPLICATION_JSON_VALUE])
 class ProfileController(
-        private val profileService: ProfileService
+        private val profileService: ProfileService,
+        private val profileQueryService: ProfileQueryService
 ) {
     @GetMapping(value = ["/profiles"])
-    suspend fun getView(@AuthenticationPrincipal principal: OAuth2AuthenticatedPrincipal): ProfileView =
-            profileService.getByUserId(principal.subject()).toView()
+    suspend fun getView(@AuthenticationPrincipal principal: OAuth2AuthenticatedPrincipal, criteria: ProfileCriteria): ProfileView =
+            profileQueryService.getByCriteria(principal.subject(), criteria)
+
 
     @PostMapping(value = ["/profiles"], consumes = [MediaType.APPLICATION_JSON_VALUE])
     suspend fun create(@AuthenticationPrincipal principal: OAuth2AuthenticatedPrincipal, @RequestBody payload: ProfileCreationPayload) {
