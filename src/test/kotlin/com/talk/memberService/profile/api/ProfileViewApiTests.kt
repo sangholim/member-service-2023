@@ -76,6 +76,7 @@ class ProfileViewApiTests(
                     exchanged.expectBody<ProfileView>().returnResult().responseBody.shouldNotBeNull().should {
                         it.email shouldBe email
                         it.name shouldBe name
+                        it.friends.shouldNotBeNull().size shouldBe 0
                     }
                 }
             }
