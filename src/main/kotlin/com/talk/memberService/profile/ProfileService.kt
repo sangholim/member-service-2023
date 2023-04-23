@@ -31,4 +31,12 @@ class ProfileService(
         if (userId == null) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "회원 번호가 존재하지 않습니다")
         return repository.findByUserId(userId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "회원 번호가 존재하지 않습니다")
     }
+
+    /**
+     * 이메일 기준 프로필 조회
+     */
+    suspend fun getByEmail(email: String?): Profile {
+        if (email == null) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "올바르지 않은 이메일입니다")
+        return repository.findByEmail(email) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다")
+    }
 }

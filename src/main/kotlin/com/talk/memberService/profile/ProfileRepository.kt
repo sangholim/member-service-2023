@@ -8,4 +8,6 @@ interface ProfileRepository : CoroutineCrudRepository<Profile, String> {
     suspend fun countByEmail(email: String): Int
 
     suspend fun findByUserId(userId: String): Profile?
+
+    suspend fun findByEmail(email: String): Profile?
 }
