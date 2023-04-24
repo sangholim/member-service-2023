@@ -1,6 +1,5 @@
 package com.talk.memberService.chatParticipant
 
-import com.talk.memberService.chat.Chat.Companion.chat
 import com.talk.memberService.chatParticipant.ChatParticipant.Companion.chatParticipant
 import com.talk.memberService.r2dbc.RepositoryTest
 import io.kotest.core.spec.style.BehaviorSpec
@@ -9,7 +8,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 
 @RepositoryTest
-class ChatParticipantepositoryTests(
+class ChatParticipantRepositoryTests(
         private val repository: ChatParticipantRepository
 ) : BehaviorSpec({
 
