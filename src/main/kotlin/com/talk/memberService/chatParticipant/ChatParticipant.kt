@@ -1,0 +1,72 @@
+package com.talk.memberService.chatParticipant
+
+import org.springframework.data.annotation.*
+import org.springframework.data.relational.core.mapping.Table
+import java.time.Instant
+
+/**
+ * 채팅 참가자
+ *
+ * 참가자들은 개별 맞춤으로 채팅방 설정 가능하다
+ */
+@Table
+class ChatParticipant(
+        /**
+         * 채팅 참가자 ID
+         */
+        @Id
+        var id: String? = null,
+        /**
+         * 챗 ID
+         */
+        var chatId: String,
+        /**
+         * 프로필 ID
+         */
+        var profileId: String,
+        /**
+         * 채팅방 이름
+         */
+        var roomName: String,
+        /**
+         * 생성 날짜
+         */
+        @CreatedDate
+        var createdAt: Instant? = null,
+        /**
+         * 생성한 user id
+         */
+        @CreatedBy
+        var createdBy: String? = null,
+        /**
+         * 수정 날짜
+         */
+        @LastModifiedDate
+        var updatedAt: Instant? = null,
+        /**
+         * 수정 user id
+         */
+        @LastModifiedBy
+        var updatedBy: String? = null
+) {
+    private constructor(builder: Builder) :
+            this(builder.id, builder.chatId!!, builder.profileId!!, builder.roomName!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
+
+    companion object {
+        inline fun chatParticipant(block: Builder.() -> Unit) = Builder().apply(block).build()
+    }
+
+    class Builder {
+        var id: String? = null
+        var chatId: String? = null
+        var profileId: String? = null
+        var roomName: String? = null
+        var createdAt: Instant? = null
+        var createdBy: String? = null
+        var updatedAt: Instant? = null
+        var updatedBy: String? = null
+        fun build(): ChatParticipant {
+            return ChatParticipant(this)
+        }
+    }
+}
