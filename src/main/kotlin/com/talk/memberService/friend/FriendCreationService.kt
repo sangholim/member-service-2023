@@ -18,6 +18,7 @@ class FriendCreationService(
     suspend fun create(userId: String?, payload: FriendCreationPayload): Friend {
         val myProfile = profileService.getByUserId(userId)
         val friendProfile = getFriendProfile(payload)
+        if (myProfile.id!! == friendProfile.id!!) throw  ResponseStatusException(HttpStatus.BAD_REQUEST, "나 자신은 영원한 인생의 친구입니다")
         if (friendService.getBySubjectProfileIdAndObjectProfileId(myProfile.id!!, friendProfile.id!!) != null)
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "등록된 친구입니다")
         return friendService.createBy(myProfile, friendProfile)

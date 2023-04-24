@@ -127,6 +127,35 @@ class FriendCreateApiTest(
                             }
                 }
             }
+            and("사용자를 친구로 추가하는 경우") {
+                beforeTest {
+                    profileRepository.deleteAll()
+                    friendRepository.deleteAll()
+                    listOf(
+                            profile {
+                                userId = Oauth2Constants.SUBJECT
+                                email = "test@test.com"
+                                name = "name"
+                            },
+                            profile {
+                                userId = "friend-user-id"
+                                email = "abc@test.com"
+                                name = "abc"
+                            }
+                    ).run { profileRepository.saveAll(this).collect() }
+                }
+                Then("status: 400") {
+                    val payload = FriendCreationPayload(
+                            FriendRegisterType.EMAIL, "test@test.com", null
+                    )
+                    val response = request(payload).exchange()
+                    response.expectBody(ErrorResponse::class.java)
+                            .returnResult().responseBody.shouldNotBeNull().should {
+                                it.status shouldBe HttpStatus.BAD_REQUEST
+                                it.message shouldBe "나 자신은 영원한 인생의 친구입니다"
+                            }
+                }
+            }
             and("친구 추가 성공한 경우") {
                 beforeTest {
                     profileRepository.deleteAll()
