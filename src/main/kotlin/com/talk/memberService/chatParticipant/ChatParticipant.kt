@@ -3,6 +3,7 @@ package com.talk.memberService.chatParticipant
 import org.springframework.data.annotation.*
 import org.springframework.data.relational.core.mapping.Table
 import java.time.Instant
+import java.util.*
 
 /**
  * 채팅 참가자
@@ -15,7 +16,7 @@ class ChatParticipant(
          * 채팅 참가자 ID
          */
         @Id
-        var id: String? = null,
+        var id: UUID? = null,
         /**
          * 챗 ID
          */
@@ -57,7 +58,7 @@ class ChatParticipant(
     }
 
     class Builder {
-        var id: String? = null
+        var id: UUID? = null
         var chatId: String? = null
         var profileId: String? = null
         var roomName: String? = null
