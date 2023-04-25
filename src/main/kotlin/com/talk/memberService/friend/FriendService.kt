@@ -9,7 +9,7 @@ class FriendService(
         private val repository: FriendRepository
 ) {
 
-    fun getBySubjectProfileId(subjectProfileId: String) = repository.findAllBySubjectProfileId(subjectProfileId)
+    fun getAllBySubjectProfileId(subjectProfileId: String) = repository.findAllBySubjectProfileId(subjectProfileId)
 
     suspend fun getBySubjectProfileIdAndObjectProfileId(subjectProfileId: String, objectProfileId: String) =
             repository.findBySubjectProfileIdAndObjectProfileId(subjectProfileId, objectProfileId)
