@@ -27,3 +27,8 @@ logging:
     org:
       springframework:
         security: TRACE
+      io:
+        r2dbc:
+          postgresql:
+            QUERY: DEBUG # for queries
+            PARAM: DEBUG # for parameters
