@@ -3,6 +3,7 @@ package com.talk.memberService.chat
 import org.springframework.data.annotation.*
 import org.springframework.data.relational.core.mapping.Table
 import java.time.Instant
+import java.util.UUID
 
 /**
  * 인터넷을 통해, 서로간의 정보를 교환하는행위
@@ -14,7 +15,7 @@ class Chat(
          * chat ID
          */
         @Id
-        var id: String? = null,
+        var id: UUID? = null,
         /**
          * 채팅 이미지
          */
@@ -49,7 +50,7 @@ class Chat(
     }
 
     class Builder {
-        var id: String? = null
+        var id: UUID? = null
         var image: String? = null
         var createdAt: Instant? = null
         var createdBy: String? = null
