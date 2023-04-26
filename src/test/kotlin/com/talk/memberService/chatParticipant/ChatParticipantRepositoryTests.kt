@@ -20,13 +20,13 @@ class ChatParticipantRepositoryTests(
             Then("DB 에 채팅 참가자 데이터가 존재한다") {
                 val chat = chatParticipant {
                     this.chatId = "chat-id"
-                    this.profileId = "profile-id"
+                    this.profileSequenceId = 1
                     this.roomName = "room"
                 }
                 repository.save(chat).should {
                     it.id shouldNotBe null
                     it.chatId shouldBe "chat-id"
-                    it.profileId shouldBe "profile-id"
+                    it.profileSequenceId shouldBe 1
                     it.roomName shouldBe "room"
                     it.createdAt shouldNotBe null
                     it.updatedAt shouldNotBe null
