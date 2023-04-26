@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.relational.core.mapping.Table
 import java.time.Instant
+import java.util.UUID
 
 /**
  * 현재 프로필 과 다른 프로필이 연결되는 도메인
@@ -18,7 +19,7 @@ class Friend(
          * 친구 ID
          */
         @Id
-        var id: String? = null,
+        var id: UUID? = null,
         /**
          * 친구 주체 프로필 ID
          */
@@ -72,7 +73,7 @@ class Friend(
     }
 
     class Builder {
-        var id: String? = null
+        var id: UUID? = null
         var subjectProfileId: String? = null
         var objectProfileId: String? = null
         var name: String? = ""
