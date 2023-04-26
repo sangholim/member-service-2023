@@ -44,6 +44,7 @@ class ProfileCreationApiTests(
                 request(payload).exchange()
                 profileRepository.findByUserId(Oauth2Constants.SUBJECT).shouldNotBeNull().should {
                     it.id shouldNotBe null
+                    it.sequenceId shouldNotBe null
                     it.userId shouldNotBe null
                     it.email shouldNotBe null
                     it.name shouldNotBe null
