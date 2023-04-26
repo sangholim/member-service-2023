@@ -109,8 +109,8 @@ class FriendCreateApiTest(
                     val myProfile = profileRepository.findByEmail("test@test.com")!!
                     val friendProfile = profileRepository.findByEmail("abc@test.com")!!
                     friend {
-                        subjectProfileId = myProfile.id!!
-                        objectProfileId = friendProfile.id!!
+                        subjectProfileId = myProfile.id.toString()
+                        objectProfileId = friendProfile.id.toString()
                         name = friendProfile.name
                     }.run { friendRepository.save(this) }
 
