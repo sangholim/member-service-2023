@@ -78,8 +78,8 @@ class ChatCreationApiTests(
                     name = "other"
                 }.run { profileRepository.save(this) }
                 friend {
-                    this.subjectProfileId = myProfile.id!!
-                    this.objectProfileId = otherProfile.id!!
+                    this.subjectProfileId = myProfile.id.toString()
+                    this.objectProfileId = otherProfile.id.toString()
                     this.name = "친구"
                 }.run { friendRepository.save(this) }
 
@@ -111,15 +111,15 @@ class ChatCreationApiTests(
                     name = "other"
                 }.run { profileRepository.save(this) }
                 friend {
-                    this.subjectProfileId = myProfile.id!!
-                    this.objectProfileId = otherProfile.id!!
+                    this.subjectProfileId = myProfile.id.toString()
+                    this.objectProfileId = otherProfile.id.toString()
                     this.name = "친구"
                 }.run { friendRepository.save(this) }
 
             }
             Then("status 201") {
                 val profile = profileRepository.findByUserId(Oauth2Constants.SUBJECT)
-                val friends = friendRepository.findAllBySubjectProfileId(profile!!.id!!).map { it.id!! }.toList()
+                val friends = friendRepository.findAllBySubjectProfileId(profile!!.id.toString()).map { it.id!! }.toList()
                 val payload = ChatCreationPayload(friends)
                 val response = request(payload).exchange()
                 response.expectStatus().isCreated
