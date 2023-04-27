@@ -48,4 +48,17 @@ class ProfileService(
     fun getAllByIds(ids: List<String>): Flow<Profile> =
             repository.findAllByIdIn(ids)
 
+    /**
+     * 유저 id를 기준, 프로필 정보와 관련된 채팅방 정보 리스트 조회
+     */
+    fun getAllWithChatsByUserId(userId: String?): Flow<ProfileChatDto> {
+        if (userId == null) throw Exception("회원 번호가 존재하지 않습니다")
+        return repository.findAllWithChatsByUserId(userId)
+    }
+
+    /**
+     * 프로필 순차 ID 기준 리스트 조회
+     */
+    fun getAllBySequenceIds(sequenceIds: List<Long>): Flow<Profile> =
+            repository.findAllBySequenceIdIn(sequenceIds)
 }
