@@ -16,25 +16,40 @@ class Chat(
          */
         @Id
         var id: UUID? = null,
+
         /**
          * 채팅 이미지
          */
         var image: String,
+
+        /**
+         * 결합된 참가자 프로필 문자열 id 리스트
+         */
+        var combinedParticipantProfileSequenceId: String,
+
+        /**
+         * 참가자 수
+         */
+        var participantCount: Int,
+
         /**
          * 생성 날짜
          */
         @CreatedDate
         var createdAt: Instant? = null,
+
         /**
          * 생성한 user id
          */
         @CreatedBy
         var createdBy: String? = null,
+
         /**
          * 수정 날짜
          */
         @LastModifiedDate
         var updatedAt: Instant? = null,
+
         /**
          * 수정 user id
          */
@@ -43,7 +58,7 @@ class Chat(
 ) {
 
     private constructor(builder: Builder) :
-            this(builder.id, builder.image!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
+            this(builder.id, builder.image!!, builder.combinedParticipantProfileSequenceId!!, builder.participantCount!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
 
     companion object {
         inline fun chat(block: Builder.() -> Unit) = Builder().apply(block).build()
@@ -52,6 +67,8 @@ class Chat(
     class Builder {
         var id: UUID? = null
         var image: String? = null
+        var combinedParticipantProfileSequenceId: String? = null
+        var participantCount: Int? = null
         var createdAt: Instant? = null
         var createdBy: String? = null
         var updatedAt: Instant? = null
