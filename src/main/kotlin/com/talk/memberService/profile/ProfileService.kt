@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
-import java.util.UUID
 
 @Service
 class ProfileService(
@@ -47,6 +46,6 @@ class ProfileService(
      * 프로필 ID 기준 조회
      */
     fun getAllByIds(ids: List<String>): Flow<Profile> =
-            repository.findAllByIdIn(ids.map { UUID.fromString(it) })
+            repository.findAllByIdIn(ids)
 
 }

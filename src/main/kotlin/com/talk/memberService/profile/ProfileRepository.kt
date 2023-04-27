@@ -13,5 +13,5 @@ interface ProfileRepository : CoroutineCrudRepository<Profile, UUID> {
 
     suspend fun findByEmail(email: String): Profile?
 
-    fun findAllByIdIn(ids: List<UUID>): Flow<Profile>
+    fun findAllByIdIn(ids: List<String>): Flow<Profile>
 }
