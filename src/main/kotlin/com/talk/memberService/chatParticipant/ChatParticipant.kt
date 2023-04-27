@@ -20,7 +20,7 @@ class ChatParticipant(
         /**
          * 챗 ID
          */
-        var chatId: String,
+        var chatId: UUID,
         /**
          * 프로필 숫자열 ID
          */
@@ -59,7 +59,7 @@ class ChatParticipant(
 
     class Builder {
         var id: UUID? = null
-        var chatId: String? = null
+        var chatId: UUID? = null
         var profileSequenceId: Long? = null
         var roomName: String? = null
         var createdAt: Instant? = null

@@ -176,7 +176,7 @@ class ChatCreationApiTests(
                 }.run { friendRepository.save(this) }
 
                 chatParticipant {
-                    this.chatId = "1"
+                    this.chatId = UUID.randomUUID()
                     this.roomName = "a"
                     this.profileSequenceId = -1
                 }.run { chatParticipantRepository.save(this) }

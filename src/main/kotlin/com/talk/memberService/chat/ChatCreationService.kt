@@ -29,6 +29,6 @@ class ChatCreationService(
         val participantCount = profileSequenceIds.size
         if (chatService.existByCombinedParticipantProfileSequenceId(combinedParticipantProfileSequenceId)) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "채팅방이 이미 존재합니다")
         val chat = chatService.create(combinedParticipantProfileSequenceId, participantCount)
-        chatParticipantService.createAllBy(chat.id.toString(), profileSequenceIds)
+        chatParticipantService.createAllBy(chat.id!!, profileSequenceIds)
     }
 }
