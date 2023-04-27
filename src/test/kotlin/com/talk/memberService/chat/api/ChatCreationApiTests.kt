@@ -1,7 +1,9 @@
 package com.talk.memberService.chat.api
 
+import com.talk.memberService.chat.Chat.Companion.chat
 import com.talk.memberService.chat.ChatCreationPayload
 import com.talk.memberService.chat.ChatRepository
+import com.talk.memberService.chatParticipant.ChatParticipant.Companion.chatParticipant
 import com.talk.memberService.chatParticipant.ChatParticipantRepository
 import com.talk.memberService.error.ErrorResponse
 import com.talk.memberService.friend.Friend.Companion.friend
@@ -94,6 +96,63 @@ class ChatCreationApiTests(
                         }
             }
         }
+        When("참가자 리스트 기준으로 채팅방이 존재하는 경우") {
+            beforeTest {
+                profileRepository.deleteAll()
+                friendRepository.deleteAll()
+                chatRepository.deleteAll()
+                chatParticipantRepository.deleteAll()
+                val myProfile = profile {
+                    userId = Oauth2Constants.SUBJECT
+                    email = "test@test.com"
+                    name = "name"
+                }.run { profileRepository.save(this) }
+                val otherProfile = profile {
+                    userId = "other"
+                    email = "other@test.com"
+                    name = "other"
+                }.run { profileRepository.save(this) }
+                val anotherProfile = profile {
+                    userId = "another"
+                    email = "another@test.com"
+                    name = "another"
+                }.run { profileRepository.save(this) }
+
+                friend {
+                    this.subjectProfileId = myProfile.id.toString()
+                    this.objectProfileId = otherProfile.id.toString()
+                    this.name = "친구"
+                }.run { friendRepository.save(this) }
+
+                friend {
+                    this.subjectProfileId = myProfile.id.toString()
+                    this.objectProfileId = anotherProfile.id.toString()
+                    this.name = "친구"
+                }.run { friendRepository.save(this) }
+
+                val combinedParticipantProfileSequenceId = profileRepository.findAll().toList().joinToString(separator = ",") {
+                    "${it.sequenceId!!}"
+                }
+                chat {
+                    this.image = "a"
+                    this.combinedParticipantProfileSequenceId = combinedParticipantProfileSequenceId
+                    this.participantCount = 3
+                }.run { chatRepository.save(this) }
+
+            }
+            Then("status 400") {
+                val profile = profileRepository.findByUserId(Oauth2Constants.SUBJECT)
+                val friends = friendRepository.findAllBySubjectProfileId(profile!!.id.toString()).map { it.id!! }.toList()
+                val payload = ChatCreationPayload(friends)
+                val response = request(payload).exchange()
+                response.expectBody(ErrorResponse::class.java)
+                        .returnResult().responseBody.shouldNotBeNull().should {
+                            it.status shouldBe HttpStatus.BAD_REQUEST
+                            it.message shouldBe "채팅방이 이미 존재합니다"
+                        }
+            }
+        }
+
         When("채팅방 생성 성공한 경우") {
             beforeTest {
                 profileRepository.deleteAll()
@@ -115,6 +174,12 @@ class ChatCreationApiTests(
                     this.objectProfileId = otherProfile.id.toString()
                     this.name = "친구"
                 }.run { friendRepository.save(this) }
+
+                chatParticipant {
+                    this.chatId = "1"
+                    this.roomName = "a"
+                    this.profileSequenceId = -1
+                }.run { chatParticipantRepository.save(this) }
 
             }
             Then("status 201") {
