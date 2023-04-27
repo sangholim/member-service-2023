@@ -6,7 +6,7 @@ CREATE TABLE chat_participant (
     id UUID DEFAULT gen_random_uuid(),
     chat_id varchar(100) NOT NULL,
     profile_sequence_id integer NOT NULL,
-    room_name varchar(255) NOT NULL,
+    room_name varchar(255),
     created_at timestamp with time zone DEFAULT NULL,
     created_by varchar(100) DEFAULT NULL,
     updated_at timestamp with time zone DEFAULT NULL,

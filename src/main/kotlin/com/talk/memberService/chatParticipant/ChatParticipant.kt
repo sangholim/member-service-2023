@@ -28,7 +28,7 @@ class ChatParticipant(
         /**
          * 채팅방 이름
          */
-        var roomName: String,
+        var roomName: String?,
         /**
          * 생성 날짜
          */
@@ -51,7 +51,7 @@ class ChatParticipant(
         var updatedBy: String? = null
 ) {
     private constructor(builder: Builder) :
-            this(builder.id, builder.chatId!!, builder.profileSequenceId!!, builder.roomName!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
+            this(builder.id, builder.chatId!!, builder.profileSequenceId!!, builder.roomName, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
 
     companion object {
         inline fun chatParticipant(block: Builder.() -> Unit) = Builder().apply(block).build()
