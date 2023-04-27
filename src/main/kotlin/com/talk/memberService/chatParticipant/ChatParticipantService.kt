@@ -17,7 +17,6 @@ class ChatParticipantService(
             chatParticipant {
                 this.chatId = chatId
                 this.profileSequenceId = profileSequenceId
-                this.roomName = ChatConstant.DEFAULT_CHAT_ROOM_NAME
             }
         }.run {
             repository.saveAll(this)
