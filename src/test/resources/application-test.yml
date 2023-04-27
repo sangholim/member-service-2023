@@ -27,6 +27,7 @@ logging:
     org:
       springframework:
         security: TRACE
+        r2dbc: DEBUG
       io:
         r2dbc:
           postgresql:
