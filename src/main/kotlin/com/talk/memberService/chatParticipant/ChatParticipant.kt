@@ -22,13 +22,13 @@ class ChatParticipant(
          */
         var chatId: String,
         /**
-         * 프로필 ID
+         * 프로필 숫자열 ID
          */
-        var profileId: String,
+        var profileSequenceId: Long,
         /**
          * 채팅방 이름
          */
-        var roomName: String,
+        var roomName: String?,
         /**
          * 생성 날짜
          */
@@ -51,7 +51,7 @@ class ChatParticipant(
         var updatedBy: String? = null
 ) {
     private constructor(builder: Builder) :
-            this(builder.id, builder.chatId!!, builder.profileId!!, builder.roomName!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
+            this(builder.id, builder.chatId!!, builder.profileSequenceId!!, builder.roomName, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
 
     companion object {
         inline fun chatParticipant(block: Builder.() -> Unit) = Builder().apply(block).build()
@@ -60,7 +60,7 @@ class ChatParticipant(
     class Builder {
         var id: UUID? = null
         var chatId: String? = null
-        var profileId: String? = null
+        var profileSequenceId: Long? = null
         var roomName: String? = null
         var createdAt: Instant? = null
         var createdBy: String? = null

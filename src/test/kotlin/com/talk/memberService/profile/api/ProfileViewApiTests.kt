@@ -91,7 +91,7 @@ class ProfileViewApiTests(
                         this.name = name
                     }.run { profileRepository.save(this) }
                     friend {
-                        this.subjectProfileId = profile.id!!
+                        this.subjectProfileId = profile.id.toString()
                         this.objectProfileId = "object_profile_id"
                         this.name = "테스트"
                     }.run { friendRepository.save(this) }

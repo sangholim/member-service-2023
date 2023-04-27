@@ -7,11 +7,12 @@ import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.relational.core.mapping.Table
 import java.time.Instant
+import java.util.*
 
 @Table
 class Profile(
         @Id
-        var id: String? = null,
+        var id: UUID? = null,
         var sequenceId: Long? = null,
         var userId: String,
         var email: String,
@@ -44,7 +45,7 @@ class Profile(
     }
 
     class Builder {
-        var id: String? = null
+        var id: UUID? = null
         var sequenceId: Long? = null
         var userId: String? = null
         var email: String = ""

@@ -42,7 +42,7 @@ data class ProfileView(
         }
 
         fun profile(profile: Profile): Builder {
-            this.id = profile.id!!
+            this.id = profile.id.toString()
             this.email = profile.email
             this.name = profile.name
             return this

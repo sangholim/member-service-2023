@@ -19,8 +19,8 @@ class FriendService(
             repository.findBySubjectProfileIdAndObjectProfileId(subjectProfileId, objectProfileId)
 
     suspend fun createBy(myProfile: Profile, friendProfile: Profile): Friend = friend {
-        this.subjectProfileId = myProfile.id!!
-        this.objectProfileId = friendProfile.id!!
+        this.subjectProfileId = myProfile.id.toString()
+        this.objectProfileId = friendProfile.id.toString()
         this.name = friendProfile.name
     }.run { repository.save(this) }
 }

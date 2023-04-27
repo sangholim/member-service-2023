@@ -12,12 +12,11 @@ class ChatParticipantService(
     /**
      * 채팅 참가자 리스트 생성
      */
-    suspend fun createAllBy(chatId: String, profileIds: List<String>) {
-        profileIds.map { profileId ->
+    suspend fun createAllBy(chatId: String, profileSequenceIds: List<Long>) {
+        profileSequenceIds.map { profileSequenceId ->
             chatParticipant {
                 this.chatId = chatId
-                this.profileId = profileId
-                this.roomName = ChatConstant.DEFAULT_CHAT_ROOM_NAME
+                this.profileSequenceId = profileSequenceId
             }
         }.run {
             repository.saveAll(this)

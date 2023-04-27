@@ -23,7 +23,7 @@ class ProfileQueryService(
         }
         if (criteria == null) return builder.build()
         if (criteria.containFriend) {
-            builder.friends(friendService.getAllBySubjectProfileId(profile.id!!).toList())
+            builder.friends(friendService.getAllBySubjectProfileId(profile.id.toString()).toList())
         }
         return builder.build()
     }
