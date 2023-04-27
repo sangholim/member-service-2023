@@ -20,10 +20,14 @@ class ChatRepositoryTests(
             Then("DB 에 채팅 데이터가 존재한다") {
                 val chat = chat {
                     this.image = "test"
+                    this.combinedParticipantProfileSequenceId = "test"
+                    this.participantCount = 1
                 }
                 repository.save(chat).should {
                     it.id shouldNotBe null
                     it.image shouldBe "test"
+                    it.combinedParticipantProfileSequenceId shouldNotBe null
+                    it.participantCount shouldBe 1
                     it.createdAt shouldNotBe null
                     it.updatedAt shouldNotBe null
                 }
