@@ -4,6 +4,7 @@ import com.talk.memberService.chat.Chat
 import com.talk.memberService.chat.ChatRepository
 import com.talk.memberService.chatParticipant.ChatParticipant
 import com.talk.memberService.chatParticipant.ChatParticipantRepository
+import com.talk.memberService.friend.Friend.Companion.friend
 import com.talk.memberService.friend.FriendRepository
 import com.talk.memberService.profile.Profile
 import com.talk.memberService.profile.Profile.Companion.profile
@@ -14,6 +15,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
 import oauth2.Oauth2Constants
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
@@ -141,7 +143,58 @@ class ProfileChatViewApiTests(
                 exchanged.expectStatus().isOk
                 exchanged.expectBodyList(ProfileChatView::class.java).returnResult().responseBody.shouldNotBeNull()
                         .should { chats ->
-                            chats.filter { it.roomName.contains(",")}.size shouldBe 2
+                            chats.filter { it.roomName.contains(",") }.size shouldBe 2
+                        }
+            }
+        }
+
+
+        When("채팅방 참가자들이 친구가 있고, 방 이름 설정 안한 경우") {
+            beforeTest {
+                profileRepository.deleteAll()
+                friendRepository.deleteAll()
+                chatRepository.deleteAll()
+                chatParticipantRepository.deleteAll()
+                listOf(profile {
+                    this.userId = Oauth2Constants.SUBJECT
+                    this.email = "user@test"
+                    this.name = "user"
+                }, profile {
+                    this.userId = "b"
+                    this.email = "b@test"
+                    this.name = "b"
+                }, profile {
+                    this.userId = "c"
+                    this.email = "c@test"
+                    this.name = "c"
+                }, profile {
+                    this.userId = "d"
+                    this.email = "d@test"
+                    this.name = "d"
+                }).run { profileRepository.saveAll(this).collect() }
+
+                val profiles = profileRepository.findAll().toList()
+
+                listOf(friend {
+                    this.name = "${profiles[0].name}의 b씨"
+                    this.subjectProfileSequenceId = profiles[0].sequenceId
+                    this.objectProfileSequenceId = profiles[1].sequenceId
+                }, friend {
+                    this.name = "${profiles[1].name}의 c씨"
+                    this.subjectProfileSequenceId = profiles[1].sequenceId
+                    this.objectProfileSequenceId = profiles[2].sequenceId
+                }).run { friendRepository.saveAll(this).collect() }
+
+                createChats(listOf(profiles[0], profiles[1], profiles[2]))
+                createChats(listOf(profiles[0], profiles[2], profiles[3]))
+                createChats(listOf(profiles[1], profiles[2]))
+            }
+            Then("status: 200 Ok, 방 이름은 ',' 으로 구분된다") {
+                val exchanged = request().exchange()
+                exchanged.expectStatus().isOk
+                exchanged.expectBodyList(ProfileChatView::class.java).returnResult().responseBody.shouldNotBeNull()
+                        .should { chats ->
+                            chats.filter { it.roomName.contains(",") }.size shouldBe 2
                         }
             }
         }
