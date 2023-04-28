@@ -83,16 +83,17 @@ class ProfileViewApiTests(
             and("질의 조건이 있는 경우") {
                 val email = "test@test"
                 val name = "a"
-                beforeEach {
+                beforeTest {
                     profileRepository.deleteAll()
-                    val profile = profile {
+                    profileRepository.save(profile {
                         this.userId = Oauth2Constants.SUBJECT
                         this.email = email
                         this.name = name
-                    }.run { profileRepository.save(this) }
+                    })
+                    val profile = profileRepository.findByUserId(Oauth2Constants.SUBJECT)!!
                     friend {
-                        this.subjectProfileId = profile.id.toString()
-                        this.objectProfileId = "object_profile_id"
+                        this.subjectProfileSequenceId = profile.sequenceId
+                        this.objectProfileSequenceId = 4
                         this.name = "테스트"
                     }.run { friendRepository.save(this) }
                 }

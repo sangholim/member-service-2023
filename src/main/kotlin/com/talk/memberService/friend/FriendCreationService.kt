@@ -19,7 +19,7 @@ class FriendCreationService(
         val myProfile = profileService.getByUserId(userId)
         val friendProfile = getFriendProfile(payload)
         if (myProfile.id!! == friendProfile.id!!) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "나 자신은 영원한 인생의 친구입니다")
-        if (friendService.getBySubjectProfileIdAndObjectProfileId(myProfile.id.toString(), friendProfile.id.toString()) != null)
+        if (friendService.getBySubjectProfileSequenceIdAndObjectProfileSequenceId(myProfile.sequenceId!!, friendProfile.sequenceId!!) != null)
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "등록된 친구입니다")
         return friendService.createBy(myProfile, friendProfile)
     }

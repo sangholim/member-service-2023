@@ -23,11 +23,11 @@ class Friend(
         /**
          * 친구 주체 프로필 ID
          */
-        var subjectProfileId: String,
+        var subjectProfileSequenceId: Long,
         /**
          * 친구 대상 프로필 ID
          */
-        var objectProfileId: String,
+        var objectProfileSequenceId: Long,
         /**
          * 친구 이름
          */
@@ -55,15 +55,15 @@ class Friend(
 ) {
 
     private constructor(builder: Builder) :
-            this(builder.id, builder.subjectProfileId!!, builder.objectProfileId!!, builder.name!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
+            this(builder.id, builder.subjectProfileSequenceId!!, builder.objectProfileSequenceId!!, builder.name!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
 
     companion object {
         inline fun friend(block: Builder.() -> Unit) = Builder().apply(block).build()
 
         fun from(friend: Friend): Builder = Builder().apply {
             this.id = friend.id
-            this.subjectProfileId = friend.subjectProfileId
-            this.objectProfileId = friend.objectProfileId
+            this.subjectProfileSequenceId = friend.subjectProfileSequenceId
+            this.objectProfileSequenceId = friend.objectProfileSequenceId
             this.name = friend.name
             this.createdAt = friend.createdAt
             this.createdBy = friend.createdBy
@@ -74,8 +74,8 @@ class Friend(
 
     class Builder {
         var id: UUID? = null
-        var subjectProfileId: String? = null
-        var objectProfileId: String? = null
+        var subjectProfileSequenceId: Long? = null
+        var objectProfileSequenceId: Long? = null
         var name: String? = ""
         var createdAt: Instant? = null
         var createdBy: String? = null
