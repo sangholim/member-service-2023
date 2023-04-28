@@ -25,7 +25,7 @@ class ProfileQueryService(
         }
         if (criteria == null) return builder.build()
         if (criteria.containFriend) {
-            builder.friends(friendService.getAllBySubjectProfileId(profile.id.toString()).toList())
+            builder.friends(friendService.getAllBySubjectProfileSequenceId(profile.sequenceId!!).toList())
         }
         return builder.build()
     }

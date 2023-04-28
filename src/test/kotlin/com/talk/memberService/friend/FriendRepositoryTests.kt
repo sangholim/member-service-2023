@@ -16,16 +16,16 @@ class FriendRepositoryTests(
             beforeEach {
                 repository.deleteAll()
             }
-            val profile = friend {
-                this.subjectProfileId = "subject_profile_id"
-                this.objectProfileId = "object_profile_id"
+            val friend = friend {
+                this.subjectProfileSequenceId = 1
+                this.objectProfileSequenceId = 2
                 this.name = "a"
             }
             Then("DB 에 친구 데이터가 존재한다") {
-                repository.save(profile).should {
+                repository.save(friend).should {
                     it.id shouldNotBe null
-                    it.subjectProfileId shouldNotBe null
-                    it.objectProfileId shouldNotBe null
+                    it.subjectProfileSequenceId shouldNotBe null
+                    it.objectProfileSequenceId shouldNotBe null
                     it.name shouldNotBe null
                     it.createdAt shouldNotBe null
                     it.updatedAt shouldNotBe null

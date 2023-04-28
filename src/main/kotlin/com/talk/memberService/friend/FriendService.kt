@@ -10,17 +10,17 @@ class FriendService(
         private val repository: FriendRepository
 ) {
 
-    fun getAllBySubjectProfileId(subjectProfileId: String) = repository.findAllBySubjectProfileId(subjectProfileId)
+    fun getAllBySubjectProfileSequenceId(subjectProfileSequenceId: Long) = repository.findAllBySubjectProfileSequenceId(subjectProfileSequenceId)
 
-    fun findAllByIdsAndSubjectProfileId(ids: List<UUID>, subjectProfileId: String) =
-            repository.findAllByIdInAndSubjectProfileId(ids, subjectProfileId)
+    fun findAllByIdsAndSubjectProfileSequenceId(ids: List<UUID>, subjectProfileSequenceId: Long) =
+            repository.findAllByIdInAndSubjectProfileSequenceId(ids, subjectProfileSequenceId)
 
-    suspend fun getBySubjectProfileIdAndObjectProfileId(subjectProfileId: String, objectProfileId: String) =
-            repository.findBySubjectProfileIdAndObjectProfileId(subjectProfileId, objectProfileId)
+    suspend fun getBySubjectProfileSequenceIdAndObjectProfileSequenceId(subjectProfileSequenceId: Long, objectProfileSequenceId: Long) =
+            repository.findBySubjectProfileSequenceIdAndObjectProfileSequenceId(subjectProfileSequenceId, objectProfileSequenceId)
 
     suspend fun createBy(myProfile: Profile, friendProfile: Profile): Friend = friend {
-        this.subjectProfileId = myProfile.id.toString()
-        this.objectProfileId = friendProfile.id.toString()
+        this.subjectProfileSequenceId = myProfile.sequenceId
+        this.objectProfileSequenceId = friendProfile.sequenceId
         this.name = friendProfile.name
     }.run { repository.save(this) }
 }

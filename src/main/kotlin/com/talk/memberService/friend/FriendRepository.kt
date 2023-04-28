@@ -5,9 +5,9 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import java.util.UUID
 
 interface FriendRepository: CoroutineCrudRepository<Friend, UUID> {
-    fun findAllBySubjectProfileId(subjectProfileId: String): Flow<Friend>
+    fun findAllBySubjectProfileSequenceId(subjectProfileSequenceId: Long): Flow<Friend>
 
-    fun findAllByIdInAndSubjectProfileId(ids:List<UUID>, subjectProfileId: String): Flow<Friend>
+    fun findAllByIdInAndSubjectProfileSequenceId(ids:List<UUID>, subjectProfileSequenceId: Long): Flow<Friend>
 
-    suspend fun findBySubjectProfileIdAndObjectProfileId(subjectProfileId: String, objectProfileId: String): Friend?
+    suspend fun findBySubjectProfileSequenceIdAndObjectProfileSequenceId(subjectProfileSequenceId: Long, objectProfileSequenceId: Long): Friend?
 }

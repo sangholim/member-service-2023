@@ -15,6 +15,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
@@ -69,19 +70,23 @@ class ChatCreationApiTests(
                 friendRepository.deleteAll()
                 chatRepository.deleteAll()
                 chatParticipantRepository.deleteAll()
-                val myProfile = profile {
-                    userId = Oauth2Constants.SUBJECT
-                    email = "test@test.com"
-                    name = "name"
-                }.run { profileRepository.save(this) }
-                val otherProfile = profile {
-                    userId = "other"
-                    email = "other@test.com"
-                    name = "other"
-                }.run { profileRepository.save(this) }
+                listOf(
+                        profile {
+                            userId = Oauth2Constants.SUBJECT
+                            email = "test@test.com"
+                            name = "name"
+                        },
+                        profile {
+                            userId = "other"
+                            email = "other@test.com"
+                            name = "other"
+                        }
+                ).run { profileRepository.saveAll(this).collect() }
+                val profiles = profileRepository.findAll().toList()
+
                 friend {
-                    this.subjectProfileId = myProfile.id.toString()
-                    this.objectProfileId = otherProfile.id.toString()
+                    this.subjectProfileSequenceId = profiles[0].sequenceId
+                    this.objectProfileSequenceId = profiles[1].sequenceId
                     this.name = "친구"
                 }.run { friendRepository.save(this) }
 
@@ -102,31 +107,34 @@ class ChatCreationApiTests(
                 friendRepository.deleteAll()
                 chatRepository.deleteAll()
                 chatParticipantRepository.deleteAll()
-                val myProfile = profile {
-                    userId = Oauth2Constants.SUBJECT
-                    email = "test@test.com"
-                    name = "name"
-                }.run { profileRepository.save(this) }
-                val otherProfile = profile {
-                    userId = "other"
-                    email = "other@test.com"
-                    name = "other"
-                }.run { profileRepository.save(this) }
-                val anotherProfile = profile {
-                    userId = "another"
-                    email = "another@test.com"
-                    name = "another"
-                }.run { profileRepository.save(this) }
+                listOf(
+                        profile {
+                            userId = Oauth2Constants.SUBJECT
+                            email = "test@test.com"
+                            name = "name"
+                        },
+                        profile {
+                            userId = "other"
+                            email = "other@test.com"
+                            name = "other"
+                        },
+                        profile {
+                            userId = "another"
+                            email = "another@test.com"
+                            name = "another"
+                        }
+                ).run { profileRepository.saveAll(this).collect() }
+                val profiles = profileRepository.findAll().toList()
 
                 friend {
-                    this.subjectProfileId = myProfile.id.toString()
-                    this.objectProfileId = otherProfile.id.toString()
+                    this.subjectProfileSequenceId = profiles[0].sequenceId
+                    this.objectProfileSequenceId = profiles[1].sequenceId
                     this.name = "친구"
                 }.run { friendRepository.save(this) }
 
                 friend {
-                    this.subjectProfileId = myProfile.id.toString()
-                    this.objectProfileId = anotherProfile.id.toString()
+                    this.subjectProfileSequenceId = profiles[0].sequenceId
+                    this.objectProfileSequenceId = profiles[2].sequenceId
                     this.name = "친구"
                 }.run { friendRepository.save(this) }
 
@@ -142,7 +150,7 @@ class ChatCreationApiTests(
             }
             Then("status 400") {
                 val profile = profileRepository.findByUserId(Oauth2Constants.SUBJECT)
-                val friends = friendRepository.findAllBySubjectProfileId(profile!!.id.toString()).map { it.id!! }.toList()
+                val friends = friendRepository.findAllBySubjectProfileSequenceId(profile?.sequenceId!!).map { it.id!! }.toList()
                 val payload = ChatCreationPayload(friends)
                 val response = request(payload).exchange()
                 response.expectBody(ErrorResponse::class.java)
@@ -154,24 +162,31 @@ class ChatCreationApiTests(
         }
 
         When("채팅방 생성 성공한 경우") {
-            beforeTest {
+            beforeEach {
                 profileRepository.deleteAll()
                 friendRepository.deleteAll()
                 chatRepository.deleteAll()
                 chatParticipantRepository.deleteAll()
-                val myProfile = profile {
-                    userId = Oauth2Constants.SUBJECT
-                    email = "test@test.com"
-                    name = "name"
-                }.run { profileRepository.save(this) }
-                val otherProfile = profile {
-                    userId = "other"
-                    email = "other@test.com"
-                    name = "other"
-                }.run { profileRepository.save(this) }
+                listOf(
+                        profile {
+                            userId = Oauth2Constants.SUBJECT
+                            email = "test@test.com"
+                            name = "name"
+                        },
+                        profile {
+                            userId = "other"
+                            email = "other@test.com"
+                            name = "other"
+                        }
+                ).run {
+                    profileRepository.saveAll(this).collect()
+                }
+
+                val profiles = profileRepository.findAll().toList()
+
                 friend {
-                    this.subjectProfileId = myProfile.id.toString()
-                    this.objectProfileId = otherProfile.id.toString()
+                    this.subjectProfileSequenceId = profiles[0].sequenceId
+                    this.objectProfileSequenceId = profiles[1].sequenceId
                     this.name = "친구"
                 }.run { friendRepository.save(this) }
 
@@ -184,7 +199,7 @@ class ChatCreationApiTests(
             }
             Then("status 201") {
                 val profile = profileRepository.findByUserId(Oauth2Constants.SUBJECT)
-                val friends = friendRepository.findAllBySubjectProfileId(profile!!.id.toString()).map { it.id!! }.toList()
+                val friends = friendRepository.findAllBySubjectProfileSequenceId(profile?.sequenceId!!).map { it.id!! }.toList()
                 val payload = ChatCreationPayload(friends)
                 val response = request(payload).exchange()
                 response.expectStatus().isCreated
