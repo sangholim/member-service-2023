@@ -1,4 +1,4 @@
-package com.talk.memberService.chat.api
+package com.talk.memberService.profile.api
 
 import com.talk.memberService.chat.Chat.Companion.chat
 import com.talk.memberService.chat.ChatCreationPayload
@@ -30,7 +30,7 @@ import java.util.UUID
 
 @SpringBootTest
 @AutoConfigureWebTestClient
-class ChatCreationApiTests(
+class ProfileChatCreationApiTests(
         private val webClient: WebTestClient,
         private val profileRepository: ProfileRepository,
         private val friendRepository: FriendRepository,
@@ -44,7 +44,7 @@ class ChatCreationApiTests(
                         it["sub"] = Oauth2Constants.SUBJECT
                     }.authorities(Oauth2Constants.ROLES)
             )
-            .post().uri("/member-service/chats").bodyValue(payload)
+            .post().uri("/member-service/profile/chats").bodyValue(payload)
 
     Given("채팅방 생성") {
         When("친구 id 가 존재하지 않는 경우") {
