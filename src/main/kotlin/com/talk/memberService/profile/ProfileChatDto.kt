@@ -7,5 +7,6 @@ data class ProfileChatDto (
     val sequenceId: Long,
     val roomName: String?,
     val image: String,
+    val participantCount: Int,
     val profileSequenceIds: List<Long>
 )
