@@ -17,7 +17,7 @@ interface ProfileRepository : CoroutineCrudRepository<Profile, UUID> {
     fun findAllByIdIn(ids: List<String>): Flow<Profile>
 
     @Query(value =
-    "SELECT p.id AS id, p.sequence_id as sequence_id, cp.room_name AS room_name, c.image AS image, c.participant_count AS participant_count, STRING_TO_ARRAY(c.combined_participant_profile_sequence_id, ',') AS profile_sequence_ids " +
+    "SELECT p.id AS id, c.id AS chat_id, p.sequence_id as sequence_id, cp.room_name AS room_name, c.image AS image, c.participant_count AS participant_count, STRING_TO_ARRAY(c.combined_participant_profile_sequence_id, ',') AS profile_sequence_ids " +
             "FROM profile p " +
             "INNER JOIN chat_participant cp " +
             "ON p.sequence_id = cp.profile_sequence_id " +
@@ -27,7 +27,7 @@ interface ProfileRepository : CoroutineCrudRepository<Profile, UUID> {
     fun findAllWithChatsByUserId(userId: String): Flow<ProfileChatDto>
 
     @Query(value =
-    "SELECT p.id AS id, p.sequence_id as sequence_id, cp.room_name AS room_name, c.image AS image, c.participant_count AS participant_count, STRING_TO_ARRAY(c.combined_participant_profile_sequence_id, ',') AS profile_sequence_ids " +
+    "SELECT p.id AS id, c.id AS chat_id, p.sequence_id as sequence_id, cp.room_name AS room_name, c.image AS image, c.participant_count AS participant_count, STRING_TO_ARRAY(c.combined_participant_profile_sequence_id, ',') AS profile_sequence_ids " +
             "FROM profile p " +
             "INNER JOIN chat_participant cp " +
             "ON p.sequence_id = cp.profile_sequence_id " +

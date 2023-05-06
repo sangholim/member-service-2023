@@ -5,6 +5,7 @@ import java.util.*
 
 data class ProfileChatView(
         val id: UUID,
+        val chatId: UUID,
         val roomName: String,
         val image: String,
         val participantCount: Int
@@ -12,6 +13,7 @@ data class ProfileChatView(
 
 fun ProfileChatDto.toView() = ProfileChatView(
         id = this.id,
+        chatId = this.chatId,
         roomName = this.roomName!!,
         image = this.image,
         participantCount = this.participantCount
@@ -19,6 +21,7 @@ fun ProfileChatDto.toView() = ProfileChatView(
 
 fun ProfileChatDto.toDetailView() = ProfileChatView(
         id = this.id,
+        chatId = this.chatId,
         roomName = this.roomName ?: ChatConstant.DEFAULT_CHAT_ROOM_NAME,
         image = this.image,
         participantCount = this.participantCount
