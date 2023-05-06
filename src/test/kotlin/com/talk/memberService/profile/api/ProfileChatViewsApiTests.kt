@@ -1,7 +1,6 @@
 package com.talk.memberService.profile.api
 
 import com.talk.memberService.chat.Chat
-import com.talk.memberService.chat.ChatConstant
 import com.talk.memberService.chat.ChatRepository
 import com.talk.memberService.chatParticipant.ChatParticipant
 import com.talk.memberService.chatParticipant.ChatParticipantRepository
@@ -12,26 +11,20 @@ import com.talk.memberService.profile.Profile.Companion.profile
 import com.talk.memberService.profile.ProfileChatView
 import com.talk.memberService.profile.ProfileRepository
 import io.kotest.core.spec.style.BehaviorSpec
-import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import oauth2.Oauth2Constants
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.web.reactive.server.WebTestClient
-import org.springframework.test.web.reactive.server.expectBody
-import java.util.UUID
 
 @SpringBootTest
 @AutoConfigureWebTestClient
-class ProfileChatViewApiTests(
+class ProfileChatViewsApiTests(
         private val webClient: WebTestClient,
         private val profileRepository: ProfileRepository,
         private val friendRepository: FriendRepository,
@@ -39,14 +32,14 @@ class ProfileChatViewApiTests(
         private val chatParticipantRepository: ChatParticipantRepository
 ) : BehaviorSpec({
 
-    fun request(chatId: UUID) = webClient
+    fun request() = webClient
             .mutateWith(
                     SecurityMockServerConfigurers.mockOpaqueToken().attributes {
                         it["sub"] = Oauth2Constants.SUBJECT
                     }.authorities(Oauth2Constants.ROLES)
             )
             .get().uri { builder ->
-                builder.path("/member-service/profile/chats/$chatId")
+                builder.path("/member-service/profile/chats")
                 builder.build()
             }
 
@@ -99,20 +92,64 @@ class ProfileChatViewApiTests(
                 createChats(listOf(profile2, profile3), "a")
             }
             Then("status: 200 Ok") {
-                val profile = profileRepository.findByUserId(Oauth2Constants.SUBJECT)!!
-                val chatParticipant = chatParticipantRepository.findAll().filter { it.profileSequenceId == profile.sequenceId }.first()
-                val exchanged = request(chatParticipant.chatId).exchange()
+                val exchanged = request().exchange()
                 exchanged.expectStatus().isOk
-                exchanged.expectBody<ProfileChatView>().returnResult().responseBody.shouldNotBeNull().should {
-                    it.id shouldNotBe null
-                    it.roomName shouldBe "a"
-                    it.image shouldNotBe null
-                    it.participantCount shouldBeGreaterThan 0
+                exchanged.expectBodyList(ProfileChatView::class.java).returnResult().responseBody.shouldNotBeNull().should { chats ->
+                    chats.filter { it.roomName == "a" }.size shouldBe 2
                 }
             }
         }
 
-        When("채팅방 참가자가 방 이름 설정 안한 경우") {
+        When("채팅방 참가자들이 친구가 없고, 방 이름 설정 안한 경우") {
+            beforeTest {
+                profileRepository.deleteAll()
+                friendRepository.deleteAll()
+                chatRepository.deleteAll()
+                chatParticipantRepository.deleteAll()
+                val profile1 = profile {
+                    this.userId = Oauth2Constants.SUBJECT
+                    this.sequenceId = 1
+                    this.email = "user@test"
+                    this.name = "user"
+                }.run { profileRepository.save(this) }
+
+                val profile2 = profile {
+                    this.userId = "b"
+                    this.sequenceId = 2
+                    this.email = "b@test"
+                    this.name = "b"
+                }.run { profileRepository.save(this) }
+
+                val profile3 = profile {
+                    this.userId = "c"
+                    this.sequenceId = 3
+                    this.email = "c@test"
+                    this.name = "c"
+                }.run { profileRepository.save(this) }
+
+                val profile4 = profile {
+                    this.userId = "d"
+                    this.sequenceId = 4
+                    this.email = "d@test"
+                    this.name = "d"
+                }.run { profileRepository.save(this) }
+
+                createChats(listOf(profile1, profile2, profile3))
+                createChats(listOf(profile1, profile3, profile4))
+                createChats(listOf(profile2, profile3))
+            }
+            Then("status: 200 Ok, 방 이름은 ',' 으로 구분된다") {
+                val exchanged = request().exchange()
+                exchanged.expectStatus().isOk
+                exchanged.expectBodyList(ProfileChatView::class.java).returnResult().responseBody.shouldNotBeNull()
+                        .should { chats ->
+                            chats.filter { it.roomName.contains(",") }.size shouldBe 2
+                        }
+            }
+        }
+
+
+        When("채팅방 참가자들이 친구가 있고, 방 이름 설정 안한 경우") {
             beforeTest {
                 profileRepository.deleteAll()
                 friendRepository.deleteAll()
@@ -152,17 +189,13 @@ class ProfileChatViewApiTests(
                 createChats(listOf(profiles[0], profiles[2], profiles[3]))
                 createChats(listOf(profiles[1], profiles[2]))
             }
-            Then("status: 200 Ok") {
-                val profile = profileRepository.findByUserId(Oauth2Constants.SUBJECT)!!
-                val chatParticipant = chatParticipantRepository.findAll().filter { it.profileSequenceId == profile.sequenceId }.first()
-                val exchanged = request(chatParticipant.chatId).exchange()
+            Then("status: 200 Ok, 방 이름은 ',' 으로 구분된다") {
+                val exchanged = request().exchange()
                 exchanged.expectStatus().isOk
-                exchanged.expectBody<ProfileChatView>().returnResult().responseBody.shouldNotBeNull().should {
-                    it.id shouldNotBe null
-                    it.roomName shouldBe ChatConstant.DEFAULT_CHAT_ROOM_NAME
-                    it.image shouldNotBe null
-                    it.participantCount shouldBeGreaterThan 0
-                }
+                exchanged.expectBodyList(ProfileChatView::class.java).returnResult().responseBody.shouldNotBeNull()
+                        .should { chats ->
+                            chats.filter { it.roomName.contains(",") }.size shouldBe 2
+                        }
             }
         }
     }

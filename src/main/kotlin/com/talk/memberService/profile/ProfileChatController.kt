@@ -11,6 +11,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal
 import org.springframework.web.bind.annotation.*
+import java.util.UUID
 
 @RestController
 @RequestMapping(value = ["/member-service/profile"], produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -31,7 +32,12 @@ class ProfileChatController(
      * 프로필 기준 채팅방 조회하기
      */
     @GetMapping(value = ["/chats"])
-    suspend fun getAll(@AuthenticationPrincipal principal: OAuth2AuthenticatedPrincipal): Flow<ProfileChatView> {
+    suspend fun getViews(@AuthenticationPrincipal principal: OAuth2AuthenticatedPrincipal): Flow<ProfileChatView> {
         return profileQueryService.getAllWithChats(principal.subject()).map(ProfileChatDto::toView)
+    }
+
+    @GetMapping(value = ["/chats/{chatId}"])
+    suspend fun getView(@PathVariable chatId: UUID, @AuthenticationPrincipal principal: OAuth2AuthenticatedPrincipal): ProfileChatView {
+        return profileQueryService.getWithChat(principal.subject(), chatId).toDetailView()
     }
 }

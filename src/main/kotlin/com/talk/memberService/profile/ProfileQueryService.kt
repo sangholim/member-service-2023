@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.*
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.util.*
 
 @Service
 class ProfileQueryService(
@@ -45,6 +46,12 @@ class ProfileQueryService(
             chat.copy(roomName = roomName)
         }
     }
+
+    /**
+     * 채팅방 단일 조회
+     */
+    suspend fun getWithChat(userId: String?, chatId: UUID): ProfileChatDto =
+            profileService.getWithChatsByUserIdAndChatId(userId, chatId)
 
     private suspend fun List<Long>.createRoomNameBySequenceIds(friends: List<Friend>): String {
         val participantFriends = friends.filter { this.contains(it.objectProfileSequenceId) }
