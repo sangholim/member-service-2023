@@ -9,7 +9,7 @@ import com.talk.memberService.friend.Friend.Companion.friend
 import com.talk.memberService.friend.FriendRepository
 import com.talk.memberService.profile.Profile
 import com.talk.memberService.profile.Profile.Companion.profile
-import com.talk.memberService.profile.ProfileChatView
+import com.talk.memberService.profile.ProfileChatDetailView
 import com.talk.memberService.profile.ProfileRepository
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -103,8 +103,10 @@ class ProfileChatViewApiTests(
                 val chatParticipant = chatParticipantRepository.findAll().filter { it.profileSequenceId == profile.sequenceId }.first()
                 val exchanged = request(chatParticipant.chatId).exchange()
                 exchanged.expectStatus().isOk
-                exchanged.expectBody<ProfileChatView>().returnResult().responseBody.shouldNotBeNull().should {
+                exchanged.expectBody<ProfileChatDetailView>().returnResult().responseBody.shouldNotBeNull().should {
                     it.id shouldNotBe null
+                    it.chatId shouldNotBe null
+                    it.chatParticipantId shouldNotBe null
                     it.roomName shouldBe "a"
                     it.image shouldNotBe null
                     it.participantCount shouldBeGreaterThan 0
@@ -157,8 +159,10 @@ class ProfileChatViewApiTests(
                 val chatParticipant = chatParticipantRepository.findAll().filter { it.profileSequenceId == profile.sequenceId }.first()
                 val exchanged = request(chatParticipant.chatId).exchange()
                 exchanged.expectStatus().isOk
-                exchanged.expectBody<ProfileChatView>().returnResult().responseBody.shouldNotBeNull().should {
+                exchanged.expectBody<ProfileChatDetailView>().returnResult().responseBody.shouldNotBeNull().should {
                     it.id shouldNotBe null
+                    it.chatId shouldNotBe null
+                    it.chatParticipantId shouldNotBe null
                     it.roomName shouldBe ChatConstant.DEFAULT_CHAT_ROOM_NAME
                     it.image shouldNotBe null
                     it.participantCount shouldBeGreaterThan 0
