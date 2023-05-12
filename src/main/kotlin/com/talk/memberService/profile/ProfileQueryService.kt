@@ -50,8 +50,8 @@ class ProfileQueryService(
     /**
      * 채팅방 단일 조회
      */
-    suspend fun getWithChat(userId: String?, chatId: UUID): ProfileChatDto =
-            profileService.getWithChatsByUserIdAndChatId(userId, chatId)
+    suspend fun getWithChat(userId: String?, chatId: UUID): ProfileChatDetailDto =
+            profileService.getWithChatByUserIdAndChatId(userId, chatId)
 
     private suspend fun List<Long>.createRoomNameBySequenceIds(friends: List<Friend>): String {
         val participantFriends = friends.filter { this.contains(it.objectProfileSequenceId) }

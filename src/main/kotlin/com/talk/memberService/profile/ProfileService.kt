@@ -44,12 +44,6 @@ class ProfileService(
     }
 
     /**
-     * 프로필 ID 기준 조회
-     */
-    fun getAllByIds(ids: List<String>): Flow<Profile> =
-            repository.findAllByIdIn(ids)
-
-    /**
      * 유저 id를 기준, 프로필 정보와 관련된 채팅방 정보 리스트 조회
      */
     fun getAllWithChatsByUserId(userId: String?): Flow<ProfileChatDto> {
@@ -57,9 +51,9 @@ class ProfileService(
         return repository.findAllWithChatsByUserId(userId)
     }
 
-    suspend fun getWithChatsByUserIdAndChatId(userId: String?, chatId: UUID): ProfileChatDto {
+    suspend fun getWithChatByUserIdAndChatId(userId: String?, chatId: UUID): ProfileChatDetailDto {
         if (userId == null) throw Exception("회원 번호가 존재하지 않습니다")
-        return repository.findWithChatsByUserIdAndChatId(userId, chatId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원 채팅방 정보입니다")
+        return repository.findWithChatByUserIdAndChatId(userId, chatId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원 채팅방 정보입니다")
     }
 
     /**

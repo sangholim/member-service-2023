@@ -27,7 +27,6 @@ data class ProfileView(
             this(builder.id, builder.email, builder.name, builder.friends)
 
     companion object {
-        inline fun profileView(block: Builder.() -> Unit) = Builder().apply(block).build()
         inline fun profileViewBuilder(block: Builder.() -> Unit) = Builder().apply(block)
 
     }
