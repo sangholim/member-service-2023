@@ -18,9 +18,11 @@ class FriendService(
     suspend fun getBySubjectProfileSequenceIdAndObjectProfileSequenceId(subjectProfileSequenceId: Long, objectProfileSequenceId: Long) =
             repository.findBySubjectProfileSequenceIdAndObjectProfileSequenceId(subjectProfileSequenceId, objectProfileSequenceId)
 
-    suspend fun createBy(myProfile: Profile, friendProfile: Profile): Friend = friend {
-        this.subjectProfileSequenceId = myProfile.sequenceId
-        this.objectProfileSequenceId = friendProfile.sequenceId
-        this.name = friendProfile.name
-    }.run { repository.save(this) }
+    suspend fun createBy(myProfile: Profile, friendProfile: Profile, type: FriendType): Friend =
+            friend {
+                this.subjectProfileSequenceId = myProfile.sequenceId
+                this.objectProfileSequenceId = friendProfile.sequenceId
+                this.name = friendProfile.name
+                this.type = type
+            }.run { repository.save(this) }
 }
