@@ -2,6 +2,7 @@ package com.talk.memberService.profile.api
 
 import com.talk.memberService.friend.Friend.Companion.friend
 import com.talk.memberService.friend.FriendRepository
+import com.talk.memberService.friend.FriendType
 import com.talk.memberService.profile.Profile.Companion.profile
 import com.talk.memberService.profile.ProfileCriteria
 import com.talk.memberService.profile.ProfileRepository
@@ -95,6 +96,7 @@ class ProfileViewApiTests(
                         this.subjectProfileSequenceId = profile.sequenceId
                         this.objectProfileSequenceId = 4
                         this.name = "테스트"
+                        this.type = FriendType.GENERAL
                     }.run { friendRepository.save(this) }
                 }
                 Then("status 200") {

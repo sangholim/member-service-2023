@@ -7,6 +7,7 @@ import com.talk.memberService.chatParticipant.ChatParticipant
 import com.talk.memberService.chatParticipant.ChatParticipantRepository
 import com.talk.memberService.friend.Friend.Companion.friend
 import com.talk.memberService.friend.FriendRepository
+import com.talk.memberService.friend.FriendType
 import com.talk.memberService.profile.Profile
 import com.talk.memberService.profile.Profile.Companion.profile
 import com.talk.memberService.profile.ProfileChatDetailView
@@ -144,10 +145,12 @@ class ProfileChatViewApiTests(
                     this.name = "${profiles[0].name}의 b씨"
                     this.subjectProfileSequenceId = profiles[0].sequenceId
                     this.objectProfileSequenceId = profiles[1].sequenceId
+                    this.type = FriendType.GENERAL
                 }, friend {
                     this.name = "${profiles[1].name}의 c씨"
                     this.subjectProfileSequenceId = profiles[1].sequenceId
                     this.objectProfileSequenceId = profiles[2].sequenceId
+                    this.type = FriendType.GENERAL
                 }).run { friendRepository.saveAll(this).collect() }
 
                 createChats(listOf(profiles[0], profiles[1], profiles[2]))

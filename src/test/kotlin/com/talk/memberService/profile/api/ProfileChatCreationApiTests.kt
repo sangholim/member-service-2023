@@ -8,6 +8,7 @@ import com.talk.memberService.chatParticipant.ChatParticipantRepository
 import com.talk.memberService.error.ErrorResponse
 import com.talk.memberService.friend.Friend.Companion.friend
 import com.talk.memberService.friend.FriendRepository
+import com.talk.memberService.friend.FriendType
 import com.talk.memberService.profile.Profile.Companion.profile
 import com.talk.memberService.profile.ProfileRepository
 import io.kotest.core.spec.style.BehaviorSpec
@@ -88,6 +89,7 @@ class ProfileChatCreationApiTests(
                     this.subjectProfileSequenceId = profiles[0].sequenceId
                     this.objectProfileSequenceId = profiles[1].sequenceId
                     this.name = "친구"
+                    this.type = FriendType.GENERAL
                 }.run { friendRepository.save(this) }
 
             }
@@ -130,12 +132,14 @@ class ProfileChatCreationApiTests(
                     this.subjectProfileSequenceId = profiles[0].sequenceId
                     this.objectProfileSequenceId = profiles[1].sequenceId
                     this.name = "친구"
+                    this.type = FriendType.GENERAL
                 }.run { friendRepository.save(this) }
 
                 friend {
                     this.subjectProfileSequenceId = profiles[0].sequenceId
                     this.objectProfileSequenceId = profiles[2].sequenceId
                     this.name = "친구"
+                    this.type = FriendType.GENERAL
                 }.run { friendRepository.save(this) }
 
                 val combinedParticipantProfileSequenceId = profileRepository.findAll().toList().joinToString(separator = ",") {
@@ -188,6 +192,7 @@ class ProfileChatCreationApiTests(
                     this.subjectProfileSequenceId = profiles[0].sequenceId
                     this.objectProfileSequenceId = profiles[1].sequenceId
                     this.name = "친구"
+                    this.type = FriendType.GENERAL
                 }.run { friendRepository.save(this) }
 
                 chatParticipant {

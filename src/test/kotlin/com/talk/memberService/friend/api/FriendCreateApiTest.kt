@@ -1,11 +1,8 @@
 package com.talk.memberService.friend.api
 
 import com.talk.memberService.error.ErrorResponse
+import com.talk.memberService.friend.*
 import com.talk.memberService.friend.Friend.Companion.friend
-import com.talk.memberService.friend.FriendCreationPayload
-import com.talk.memberService.friend.FriendRegisterType
-import com.talk.memberService.friend.FriendRepository
-import com.talk.memberService.friend.FriendView
 import com.talk.memberService.profile.Profile.Companion.profile
 import com.talk.memberService.profile.ProfileRepository
 import io.kotest.core.spec.style.BehaviorSpec
@@ -14,6 +11,7 @@ import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.count
 import oauth2.Oauth2Constants
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
@@ -112,6 +110,7 @@ class FriendCreateApiTest(
                         subjectProfileSequenceId = myProfile.sequenceId
                         objectProfileSequenceId = friendProfile.sequenceId
                         name = friendProfile.name
+                        type = FriendType.GENERAL
                     }.run { friendRepository.save(this) }
 
                 }
@@ -184,6 +183,7 @@ class FriendCreateApiTest(
                                 it.id shouldNotBe null
                                 it.name shouldNotBe null
                             }
+                    friendRepository.findAll().count { it.type == FriendType.RECOMMEND } shouldNotBe 0
                 }
             }
         }
