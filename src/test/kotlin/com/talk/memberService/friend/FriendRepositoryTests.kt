@@ -20,6 +20,7 @@ class FriendRepositoryTests(
                 this.subjectProfileSequenceId = 1
                 this.objectProfileSequenceId = 2
                 this.name = "a"
+                this.type = FriendType.GENERAL
             }
             Then("DB 에 친구 데이터가 존재한다") {
                 repository.save(friend).should {

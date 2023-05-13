@@ -33,6 +33,10 @@ class Friend(
          */
         var name: String,
         /**
+         * 친구 구분
+         */
+        var type: FriendType,
+        /**
          * 생성 날짜
          */
         @CreatedDate
@@ -55,7 +59,7 @@ class Friend(
 ) {
 
     private constructor(builder: Builder) :
-            this(builder.id, builder.subjectProfileSequenceId!!, builder.objectProfileSequenceId!!, builder.name!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
+            this(builder.id, builder.subjectProfileSequenceId!!, builder.objectProfileSequenceId!!, builder.name!!, builder.type!!, builder.createdAt, builder.createdBy, builder.updatedAt, builder.updatedBy)
 
     companion object {
         inline fun friend(block: Builder.() -> Unit) = Builder().apply(block).build()
@@ -65,6 +69,7 @@ class Friend(
             this.subjectProfileSequenceId = friend.subjectProfileSequenceId
             this.objectProfileSequenceId = friend.objectProfileSequenceId
             this.name = friend.name
+            this.type = friend.type
             this.createdAt = friend.createdAt
             this.createdBy = friend.createdBy
             this.updatedAt = friend.updatedAt
@@ -77,6 +82,7 @@ class Friend(
         var subjectProfileSequenceId: Long? = null
         var objectProfileSequenceId: Long? = null
         var name: String? = ""
+        var type: FriendType? = null
         var createdAt: Instant? = null
         var createdBy: String? = null
         var updatedAt: Instant? = null
