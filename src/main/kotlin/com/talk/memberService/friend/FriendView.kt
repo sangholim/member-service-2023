@@ -7,10 +7,12 @@ import java.util.UUID
  */
 data class FriendView(
         val id: UUID,
-        val name: String
+        val name: String,
+        val type: FriendType
 )
 
 fun Friend.toView() = FriendView(
         id = this.id!!,
-        name = this.name
+        name = this.name,
+        type = this.type
 )
