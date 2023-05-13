@@ -13,6 +13,7 @@ class FriendCreationService(
 ) {
     /**
      * 친구 생성하기
+     * 생성시, 친구 대상 프로필 기준으로도 추천 친구 데이터 생성한다.
      */
 
     suspend fun create(userId: String?, payload: FriendCreationPayload): Friend {
@@ -21,7 +22,8 @@ class FriendCreationService(
         if (myProfile.id!! == friendProfile.id!!) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "나 자신은 영원한 인생의 친구입니다")
         if (friendService.getBySubjectProfileSequenceIdAndObjectProfileSequenceId(myProfile.sequenceId!!, friendProfile.sequenceId!!) != null)
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "등록된 친구입니다")
-        return friendService.createBy(myProfile, friendProfile)
+        friendService.createBy(friendProfile, myProfile, FriendType.RECOMMEND)
+        return friendService.createBy(myProfile, friendProfile, FriendType.GENERAL)
     }
 
     private suspend fun getFriendProfile(payload: FriendCreationPayload): Profile =
