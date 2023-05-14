@@ -2,6 +2,7 @@ package com.talk.memberService.profile
 
 import com.talk.memberService.friend.Friend
 import com.talk.memberService.friend.FriendService
+import com.talk.memberService.friend.FriendType
 import com.talk.memberService.profile.ProfileView.Companion.profileViewBuilder
 import kotlinx.coroutines.flow.*
 import org.springframework.http.HttpStatus
@@ -25,7 +26,7 @@ class ProfileQueryService(
         }
         if (criteria == null) return builder.build()
         if (criteria.containFriend) {
-            builder.friends(friendService.getAllBySubjectProfileSequenceId(profile.sequenceId!!).toList())
+            builder.friends(friendService.getAllBySubjectProfileSequenceIdAndType(profile.sequenceId!!, FriendType.GENERAL).toList())
         }
         return builder.build()
     }
