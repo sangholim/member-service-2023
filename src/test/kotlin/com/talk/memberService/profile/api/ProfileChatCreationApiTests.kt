@@ -210,7 +210,7 @@ class ProfileChatCreationApiTests(
                 response.expectStatus().isCreated
                 val chat = chatRepository.findAll().first()
                 chat.id shouldNotBe null
-                val chatParticipants = chatParticipantRepository.findAllByChatId(chat.id.toString()).toList()
+                val chatParticipants = chatParticipantRepository.findAllByChatId(chat.id!!).toList()
                 chatParticipants.size shouldBe 2
             }
         }
