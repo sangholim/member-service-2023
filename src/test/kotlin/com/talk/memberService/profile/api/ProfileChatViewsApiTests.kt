@@ -101,6 +101,55 @@ class ProfileChatViewsApiTests(
             }
         }
 
+        When("채팅방 참가자들이 친구가 없고, 방 이름 설정 안한 경우") {
+            beforeTest {
+                profileRepository.deleteAll()
+                friendRepository.deleteAll()
+                chatRepository.deleteAll()
+                chatParticipantRepository.deleteAll()
+                val profile1 = profile {
+                    this.userId = Oauth2Constants.SUBJECT
+                    this.sequenceId = 1
+                    this.email = "user@test"
+                    this.name = "user"
+                }.run { profileRepository.save(this) }
+
+                val profile2 = profile {
+                    this.userId = "b"
+                    this.sequenceId = 2
+                    this.email = "b@test"
+                    this.name = "b"
+                }.run { profileRepository.save(this) }
+
+                val profile3 = profile {
+                    this.userId = "c"
+                    this.sequenceId = 3
+                    this.email = "c@test"
+                    this.name = "c"
+                }.run { profileRepository.save(this) }
+
+                val profile4 = profile {
+                    this.userId = "d"
+                    this.sequenceId = 4
+                    this.email = "d@test"
+                    this.name = "d"
+                }.run { profileRepository.save(this) }
+
+                createChats(listOf(profile1, profile2, profile3))
+                createChats(listOf(profile1, profile3, profile4))
+                createChats(listOf(profile2, profile3))
+            }
+            Then("status: 200 Ok, 방 이름은 ',' 으로 구분된다") {
+                val exchanged = request().exchange()
+                exchanged.expectStatus().isOk
+                exchanged.expectBodyList(ProfileChatView::class.java).returnResult().responseBody.shouldNotBeNull()
+                        .should { chats ->
+                            chats.filter { it.roomName.contains(",") }.size shouldBe 2
+                        }
+            }
+        }
+
+
         When("채팅방 참가자들이 친구가 있고, 방 이름 설정 안한 경우") {
             beforeTest {
                 profileRepository.deleteAll()
