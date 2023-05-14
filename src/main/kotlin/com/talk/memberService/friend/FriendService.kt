@@ -12,6 +12,8 @@ class FriendService(
 
     fun getAllBySubjectProfileSequenceId(subjectProfileSequenceId: Long) = repository.findAllBySubjectProfileSequenceId(subjectProfileSequenceId)
 
+    fun getAllBySubjectProfileSequenceIdAndType(subjectProfileSequenceId: Long, type: FriendType) = repository.findAllBySubjectProfileSequenceIdAndType(subjectProfileSequenceId, type)
+
     fun findAllByIdsAndSubjectProfileSequenceId(ids: List<UUID>, subjectProfileSequenceId: Long) =
             repository.findAllByIdInAndSubjectProfileSequenceId(ids, subjectProfileSequenceId)
 
