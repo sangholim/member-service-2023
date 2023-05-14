@@ -1,5 +1,8 @@
 package com.talk.memberService.profile
 
+import com.talk.memberService.chatParticipant.ChatParticipantProjectionDto
+import com.talk.memberService.chatParticipant.ChatParticipantService
+import com.talk.memberService.chatParticipant.toView
 import com.talk.memberService.friend.Friend
 import com.talk.memberService.friend.FriendService
 import com.talk.memberService.friend.FriendType
@@ -13,7 +16,8 @@ import java.util.*
 @Service
 class ProfileQueryService(
         private val profileService: ProfileService,
-        private val friendService: FriendService
+        private val friendService: FriendService,
+        private val chatParticipantService: ChatParticipantService
 ) {
     /**
      * 질의 필드 기준으로 프로필 및 관련 도메인의 데이터를 가져온다
@@ -51,8 +55,13 @@ class ProfileQueryService(
     /**
      * 채팅방 단일 조회
      */
-    suspend fun getWithChat(userId: String?, chatId: UUID): ProfileChatDetailDto =
-            profileService.getWithChatByUserIdAndChatId(userId, chatId)
+    suspend fun getWithChat(userId: String?, chatId: UUID): ProfileChatDetailView {
+        val profile = profileService.getByUserId(userId)
+        val chatParticipants = chatParticipantService.getAllWithProfileAndFriendBy(chatId, profile.sequenceId!!).toList().toList()
+        val others = chatParticipants.filter { it.profileName != profile.name }.map(ChatParticipantProjectionDto::toView)
+        val me = chatParticipants.first { it.profileName == profile.name }
+        return ProfileChatDetailView.from(me, others)
+    }
 
     private suspend fun List<Long>.createRoomNameBySequenceIds(friends: List<Friend>): String {
         val participantFriends = friends.filter { this.contains(it.objectProfileSequenceId) }
