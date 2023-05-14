@@ -35,6 +35,4 @@ interface ProfileRepository : CoroutineCrudRepository<Profile, UUID> {
             "WHERE p.user_id = $1 " +
             "AND c.id = $2 ")
     suspend fun findWithChatByUserIdAndChatId(userId: String, chatId: UUID): ProfileChatDetailDto?
-
-    fun findAllBySequenceIdIn(sequenceIds: List<Long>): Flow<Profile>
 }

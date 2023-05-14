@@ -55,10 +55,4 @@ class ProfileService(
         if (userId == null) throw Exception("회원 번호가 존재하지 않습니다")
         return repository.findWithChatByUserIdAndChatId(userId, chatId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원 채팅방 정보입니다")
     }
-
-    /**
-     * 프로필 순차 ID 기준 리스트 조회
-     */
-    fun getAllBySequenceIds(sequenceIds: List<Long>): Flow<Profile> =
-            repository.findAllBySequenceIdIn(sequenceIds)
 }
