@@ -58,9 +58,10 @@ class ProfileQueryService(
     suspend fun getWithChat(userId: String?, chatId: UUID): ProfileChatDetailView {
         val profile = profileService.getByUserId(userId)
         val chatParticipants = chatParticipantService.getAllWithProfileAndFriendBy(chatId, profile.sequenceId!!).toList().toList()
+        val chatParticipantCount = chatParticipants.size
         val others = chatParticipants.filter { it.profileName != profile.name }.map(ChatParticipantProjectionDto::toView)
         val me = chatParticipants.first { it.profileName == profile.name }
-        return ProfileChatDetailView.from(me, others)
+        return ProfileChatDetailView.from(me, others, chatParticipantCount)
     }
 
     private suspend fun List<Long>.createRoomNameBySequenceIds(friends: List<Friend>): String {

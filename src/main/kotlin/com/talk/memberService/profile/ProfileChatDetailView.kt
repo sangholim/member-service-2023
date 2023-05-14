@@ -32,14 +32,14 @@ data class ProfileChatDetailView(
         val participantCount: Int
 ) {
     companion object {
-        fun from(me: ChatParticipantProjectionDto, participants: List<ChatParticipantView>): ProfileChatDetailView {
+        fun from(me: ChatParticipantProjectionDto, participants: List<ChatParticipantView>, participantCount: Int): ProfileChatDetailView {
             return ProfileChatDetailView(
                     chatId = me.chatId,
                     chatParticipantId = me.id,
                     roomName = me.roomName ?: ChatConstant.DEFAULT_CHAT_ROOM_NAME,
                     roomImage = me.roomImage,
                     participants = participants,
-                    participantCount = participants.size
+                    participantCount = participantCount
             )
         }
     }
