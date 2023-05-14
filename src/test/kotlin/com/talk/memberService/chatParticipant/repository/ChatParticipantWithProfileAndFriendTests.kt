@@ -86,7 +86,7 @@ class ChatParticipantWithProfileAndFriendTests(
             Then("DB 에 채팅 참가자 데이터가 존재한다") {
                 val chatId = chatRepository.findAll().first().id!!
                 val profileSequenceId = profileRepository.findByUserId(userId)?.sequenceId!!
-                val dtos = chatParticipantRepository.findAllWithProfileAndFriendBy(chatId, profileSequenceId).toList()
+                val dtos = chatParticipantRepository.findAllWithChatAndProfileAndFriendBy(chatId, profileSequenceId).toList()
                 println(dtos)
                 dtos.size shouldBe 3
             }

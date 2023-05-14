@@ -28,5 +28,5 @@ class ChatParticipantService(
      * 프로팔 - 친구 join 하여
      * 채팅 참가자 리스트 조회
      */
-    fun getAllWithProfileAndFriendBy(chatId: UUID, subjectProfileSequenceId: Long): Flow<ChatParticipantProjectionDto> = repository.findAllWithProfileAndFriendBy(chatId, subjectProfileSequenceId)
+    fun getAllWithChatAndProfileAndFriendBy(chatId: UUID, subjectProfileSequenceId: Long): Flow<ChatParticipantProjectionDto> = repository.findAllWithChatAndProfileAndFriendBy(chatId, subjectProfileSequenceId)
 }

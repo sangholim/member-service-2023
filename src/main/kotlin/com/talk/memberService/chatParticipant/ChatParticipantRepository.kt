@@ -9,7 +9,7 @@ interface ChatParticipantRepository : CoroutineCrudRepository<ChatParticipant, U
     fun findAllByChatId(chatId: UUID): Flow<ChatParticipant>
 
     /**
-     * 참가자 - 프로필 - 친구
+     * 참가자 - 채팅 - 프로필 - 친구
      * join 하여 데이터 조회
      */
     @Query(value = "SELECT cp.id AS id, cp.chat_id AS chat_id, cp.room_name AS room_name, c.image AS room_image, p.name AS profile_name, f.name AS friend_name " +
@@ -22,5 +22,5 @@ interface ChatParticipantRepository : CoroutineCrudRepository<ChatParticipant, U
             "ON cp.profile_sequence_id = f.object_profile_sequence_id " +
             "AND f.subject_profile_sequence_id = $2 "
     )
-    fun findAllWithProfileAndFriendBy(chatId: UUID, subjectProfileSequenceId: Long): Flow<ChatParticipantProjectionDto>
+    fun findAllWithChatAndProfileAndFriendBy(chatId: UUID, subjectProfileSequenceId: Long): Flow<ChatParticipantProjectionDto>
 }
