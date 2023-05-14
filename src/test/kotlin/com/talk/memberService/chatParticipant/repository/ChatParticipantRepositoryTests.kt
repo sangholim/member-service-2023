@@ -1,6 +1,7 @@
-package com.talk.memberService.chatParticipant
+package com.talk.memberService.chatParticipant.repository
 
 import com.talk.memberService.chatParticipant.ChatParticipant.Companion.chatParticipant
+import com.talk.memberService.chatParticipant.ChatParticipantRepository
 import com.talk.memberService.r2dbc.RepositoryTest
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.should

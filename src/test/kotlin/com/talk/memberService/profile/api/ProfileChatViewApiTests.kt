@@ -105,11 +105,10 @@ class ProfileChatViewApiTests(
                 val exchanged = request(chatParticipant.chatId).exchange()
                 exchanged.expectStatus().isOk
                 exchanged.expectBody<ProfileChatDetailView>().returnResult().responseBody.shouldNotBeNull().should {
-                    it.id shouldNotBe null
                     it.chatId shouldNotBe null
                     it.chatParticipantId shouldNotBe null
                     it.roomName shouldBe "a"
-                    it.image shouldNotBe null
+                    it.roomImage shouldNotBe null
                     it.participantCount shouldBeGreaterThan 0
                 }
             }
@@ -163,11 +162,10 @@ class ProfileChatViewApiTests(
                 val exchanged = request(chatParticipant.chatId).exchange()
                 exchanged.expectStatus().isOk
                 exchanged.expectBody<ProfileChatDetailView>().returnResult().responseBody.shouldNotBeNull().should {
-                    it.id shouldNotBe null
                     it.chatId shouldNotBe null
                     it.chatParticipantId shouldNotBe null
                     it.roomName shouldBe ChatConstant.DEFAULT_CHAT_ROOM_NAME
-                    it.image shouldNotBe null
+                    it.roomImage shouldNotBe null
                     it.participantCount shouldBeGreaterThan 0
                 }
             }

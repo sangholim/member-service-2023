@@ -38,6 +38,6 @@ class ProfileChatController(
 
     @GetMapping(value = ["/chats/{chatId}"])
     suspend fun getView(@PathVariable chatId: UUID, @AuthenticationPrincipal principal: OAuth2AuthenticatedPrincipal): ProfileChatDetailView {
-        return profileQueryService.getWithChat(principal.subject(), chatId).toView()
+        return profileQueryService.getWithChat(principal.subject(), chatId)
     }
 }
