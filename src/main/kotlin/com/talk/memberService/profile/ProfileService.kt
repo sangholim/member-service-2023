@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
-import java.util.UUID
 
 @Service
 class ProfileService(
@@ -49,11 +48,6 @@ class ProfileService(
     fun getAllWithChatsByUserId(userId: String?): Flow<ProfileChatDto> {
         if (userId == null) throw Exception("회원 번호가 존재하지 않습니다")
         return repository.findAllWithChatsByUserId(userId)
-    }
-
-    suspend fun getWithChatByUserIdAndChatId(userId: String?, chatId: UUID): ProfileChatDetailDto {
-        if (userId == null) throw Exception("회원 번호가 존재하지 않습니다")
-        return repository.findWithChatByUserIdAndChatId(userId, chatId) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원 채팅방 정보입니다")
     }
 
     /**

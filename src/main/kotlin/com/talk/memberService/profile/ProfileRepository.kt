@@ -25,16 +25,5 @@ interface ProfileRepository : CoroutineCrudRepository<Profile, UUID> {
             "WHERE p.user_id = $1")
     fun findAllWithChatsByUserId(userId: String): Flow<ProfileChatDto>
 
-    @Query(value =
-    "SELECT p.id AS id, c.id AS chat_id, cp.id AS chat_participant_id, p.sequence_id as sequence_id, cp.room_name AS room_name, c.image AS image, c.participant_count AS participant_count, STRING_TO_ARRAY(c.combined_participant_profile_sequence_id, ',') AS profile_sequence_ids " +
-            "FROM profile p " +
-            "INNER JOIN chat_participant cp " +
-            "ON p.sequence_id = cp.profile_sequence_id " +
-            "INNER JOIN chat c " +
-            "ON cp.chat_id = c.id " +
-            "WHERE p.user_id = $1 " +
-            "AND c.id = $2 ")
-    suspend fun findWithChatByUserIdAndChatId(userId: String, chatId: UUID): ProfileChatDetailDto?
-
     fun findAllBySequenceIdIn(sequenceIds: List<Long>): Flow<Profile>
 }
