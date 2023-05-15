@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: ${AUTHORIZATION_SERVER_URI}/oauth2/v1/introspect
+          client-id: internal-client
+          client-secret: internal-client-secret
+  r2dbc:
+    url: r2dbc:postgresql://root:password@localhost:5432/member_service
+  flyway:
+    user: root
+    password: password
+    url: jdbc:postgresql://localhost:5432/member_service
+    baseline-on-migrate: true
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
