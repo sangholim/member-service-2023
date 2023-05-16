@@ -27,5 +27,5 @@ interface ProfileRepository : CoroutineCrudRepository<Profile, UUID> {
 
     fun findAllBySequenceIdIn(sequenceIds: List<Long>): Flow<Profile>
 
-    fun findByName(name: String): Profile?
+    suspend fun findByName(name: String): Profile?
 }
