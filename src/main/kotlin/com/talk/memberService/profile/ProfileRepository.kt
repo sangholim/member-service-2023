@@ -26,4 +26,6 @@ interface ProfileRepository : CoroutineCrudRepository<Profile, UUID> {
     fun findAllWithChatsByUserId(userId: String): Flow<ProfileChatDto>
 
     fun findAllBySequenceIdIn(sequenceIds: List<Long>): Flow<Profile>
+
+    fun findByName(name: String): Profile?
 }

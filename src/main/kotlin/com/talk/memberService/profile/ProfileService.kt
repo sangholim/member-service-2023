@@ -55,4 +55,12 @@ class ProfileService(
      */
     fun getAllBySequenceIds(sequenceIds: List<Long>): Flow<Profile> =
             repository.findAllBySequenceIdIn(sequenceIds)
+
+    /**
+     * 이름 기준 프로필 조회
+     */
+    fun getByName(name: String?): Profile {
+        if (name == null) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "올바르지 않은 이름입니다")
+        return repository.findByName(name) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다")
+    }
 }

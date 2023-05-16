@@ -29,6 +29,6 @@ class FriendCreationService(
     private suspend fun getFriendProfile(payload: FriendCreationPayload): Profile =
             when (payload.type) {
                 FriendRegisterType.EMAIL -> profileService.getByEmail(payload.email)
-                else -> throw ResponseStatusException(HttpStatus.BAD_REQUEST, "올바르지 않은 형식입니다")
+                FriendRegisterType.NAME -> profileService.getByName(payload.name)
             }
 }
