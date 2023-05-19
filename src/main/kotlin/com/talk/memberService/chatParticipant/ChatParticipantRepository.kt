@@ -15,7 +15,8 @@ interface ChatParticipantRepository : CoroutineCrudRepository<ChatParticipant, U
     @Query(value = "SELECT cp.id AS id, cp.chat_id AS chat_id, cp.room_name AS room_name, c.image AS room_image, p.name AS profile_name, f.name AS friend_name " +
             "FROM chat_participant cp " +
             "INNER JOIN chat c " +
-            "ON c.id = $1 " +
+            "ON cp.chat_id = c.id " +
+            "AND c.id = $1 " +
             "INNER JOIN profile p " +
             "ON cp.profile_sequence_id = p.sequence_id " +
             "LEFT JOIN friend f " +

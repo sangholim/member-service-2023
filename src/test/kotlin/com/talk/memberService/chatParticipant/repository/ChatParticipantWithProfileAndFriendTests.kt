@@ -70,6 +70,7 @@ class ChatParticipantWithProfileAndFriendTests(
             beforeEach {
                 profileRepository.deleteAll()
                 friendRepository.deleteAll()
+                chatRepository.deleteAll()
                 chatParticipantRepository.deleteAll()
                 val me = createProfile(userId, "나")
                 val profile1 = createProfile(null, "김")
@@ -87,7 +88,6 @@ class ChatParticipantWithProfileAndFriendTests(
                 val chatId = chatRepository.findAll().first().id!!
                 val profileSequenceId = profileRepository.findByUserId(userId)?.sequenceId!!
                 val dtos = chatParticipantRepository.findAllWithChatAndProfileAndFriendBy(chatId, profileSequenceId).toList()
-                println(dtos)
                 dtos.size shouldBe 3
             }
         }
